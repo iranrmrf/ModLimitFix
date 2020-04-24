@@ -1,0 +1,4 @@
+LIBRARY	"mod_limit_fix"
+EXPORTS
+NVSEPlugin_Query
+NVSEPlugin_Load

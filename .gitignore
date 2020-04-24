@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+/Fallout New Vegas/FNVModLimitFix/Backup
+
+/Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.sdf
+/Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.opensdf
+
