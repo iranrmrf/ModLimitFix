@@ -31,8 +31,13 @@
 *.out
 *.app
 
+/Fallout New Vegas/common/Debug VC9
+/Fallout New Vegas/common/Release VC9
+
 /Fallout New Vegas/FNVModLimitFix/Backup
 
 /Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.sdf
 /Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.opensdf
 
+/Fallout New Vegas/FNVModLimitFix/Debug
+/Fallout New Vegas/FNVModLimitFix/Release

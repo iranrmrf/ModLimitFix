@@ -107,7 +107,6 @@ extern "C"
 		}
 		_VMESSAGE("Free filestream stack located at: %#.8x", stack);
 
-
 		f_lock(1);
 
 		memcpy((void*)newAddy, (void*)oldAddy, 0x50);
@@ -143,7 +142,7 @@ extern "C"
 			}
 		}
 
-		_MESSAGE("Mod limit fix has been successfully applied. Enjoy the new mod limit!", stack);
+		_MESSAGE("Mod limit fix has been successfully applied. Enjoy the new mod limit!");
 
 		return true;
 	}
