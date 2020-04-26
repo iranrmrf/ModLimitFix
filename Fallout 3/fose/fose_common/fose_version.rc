@@ -1,0 +1,32 @@
+#include "fose_version.h"
+
+1 VERSIONINFO
+ FILEVERSION 0,FOSE_VERSION_INTEGER,FOSE_VERSION_INTEGER_MINOR,FOSE_VERSION_INTEGER_BETA
+ PRODUCTVERSION 0,FOSE_VERSION_INTEGER,FOSE_VERSION_INTEGER_MINOR,FOSE_VERSION_INTEGER_BETA
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "A component of the Fallout Script Extender"
+			VALUE "FileVersion", FOSE_VERSION_VERSTRING
+            VALUE "InternalName", "fose"
+            VALUE "LegalCopyright", "Copyright (C) 2006-2009"
+            VALUE "ProductName", "fose"
+			VALUE "ProductVersion", FOSE_VERSION_VERSTRING
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

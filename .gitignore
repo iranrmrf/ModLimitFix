@@ -36,8 +36,14 @@
 
 /Fallout New Vegas/FNVModLimitFix/Backup
 
-/Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.sdf
-/Fallout New Vegas/FNVModLimitFix/FNVModLimitFix.opensdf
-
 /Fallout New Vegas/FNVModLimitFix/Debug
 /Fallout New Vegas/FNVModLimitFix/Release
+
+/Fallout 3/common/Debug
+/Fallout 3/common/Release
+
+/Fallout 3/FO3ModLimitFix/Debug
+/Fallout 3/FO3ModLimitFix/Release
+
+*.sdf
+*.opensdf

@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\fose\fose\GameAPI.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameBSExtraData.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameData.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameExtraData.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameForms.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameInterface.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameObjects.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameOSDepend.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameRTTI.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameSettings.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameTiles.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\GameTypes.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\PluginManager.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Serialization.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Utilities.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Console.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Game.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Input.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Inventory.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_List.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Math.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_MiscRef.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_ModelIcon.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Quest.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_Script.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Commands_UI.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\CommandTable.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Core_Serialization.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose_common\SafeWrite.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Hooks_CreatedObject.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Hooks_DirectInput8Create.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Hooks_Gameplay.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Hooks_SaveLoad.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fose\fose\Hooks_Script.cpp">
+      <Filter>fose</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="fose">
+      <UniqueIdentifier>{922e016a-8885-403b-8ad8-806878e03a8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\fose\fose\GameAPI.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameBSExtraData.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameData.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameEffects.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameExtraData.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameForms.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameInterface.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameMenus.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameObjects.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameOSDepend.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameRTTI.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameSettings.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameTiles.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\GameTypes.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\ParamInfos.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\PluginAPI.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\PluginManager.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Serialization.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Utilities.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Console.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Game.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Input.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Inventory.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_List.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Math.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_MiscRef.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_ModelIcon.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Quest.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_Script.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Commands_UI.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\CommandTable.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Core_Serialization.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose_common\SafeWrite.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="stack.h" />
+    <ClInclude Include="..\fose\fose\Hooks_CreatedObject.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Hooks_DirectInput8Create.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Hooks_Gameplay.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Hooks_SaveLoad.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fose\fose\Hooks_Script.h">
+      <Filter>fose</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.h" />
+    <ClInclude Include="log.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exports.def" />
+  </ItemGroup>
+</Project>

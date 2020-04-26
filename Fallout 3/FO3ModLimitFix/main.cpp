@@ -1,7 +1,8 @@
 #include <Windows.h>
 
-#include "nvse/PluginAPI.h"
-#include "nvse/SafeWrite.h"
+#include "fose/GameAPI.h"
+#include "fose/PluginAPI.h"
+#include "fose_common/SafeWrite.h"
 
 #include <hooks.h>
 #include <log.h>
@@ -23,29 +24,29 @@ extern "C"
 		return TRUE;
 	}
 
-	bool NVSEPlugin_Query(const NVSEInterface * nvse, PluginInfo * info)
+	bool FOSEPlugin_Query(const FOSEInterface *fose, PluginInfo * info)
 	{
 		info->infoVersion = PluginInfo::kInfoVersion;
 		info->name = "Mod Limit Fix";
 		info->version = 2.1;
 
-		if (nvse->isEditor)
+		if (fose->isEditor)
 		{
 			return false;
 		}
 
 		gLog.Open("mod_limit_fix.log");
 
-		if (nvse->nvseVersion < NVSE_VERSION_INTEGER)
+		if (fose->foseVersion < FOSE_VERSION_INTEGER)
 		{
-			_FATALERROR("NVSE version is too low, please use the latest version of NVSE.");
+			_FATALERROR("FOSE version is too low, please use the latest version of FOSE.");
 			return false;
 		}
 
 		return true;
 	}
 
-	bool NVSEPlugin_Load(const NVSEInterface * nvse)
+	bool FOSEPlugin_Load(const FOSEInterface *fose)
 	{
 		InitSettings();
 
@@ -57,7 +58,7 @@ extern "C"
 		}
 
 		if (settings.bDebugLog)
-		{			
+		{
 			gLog.SetLogLevel(IDebugLog::kLevel_DebugMessage);
 		}
 
@@ -95,7 +96,7 @@ extern "C"
 
 		VMESSAGE("Hooking _getstream and _fclose functions...");
 
-		Hook((void*)getstreamAddy, &f_getstream, 0x138);
+		Hook((void*)getstreamAddy, &f_getstream, 0x130);
 		Hook((void*)fcloseAddy, &f_fclose, 0x7C);
 
 		for (int i = settings.iMaxHnd - 1; i > 19; i--)
@@ -107,7 +108,7 @@ extern "C"
 		stack->dbg = settings.bDebugLog;
 
 		MESSAGE("Mod limit fix has been successfully applied. Enjoy the new mod limit!");
-		
+
 		return true;
 	}
 };

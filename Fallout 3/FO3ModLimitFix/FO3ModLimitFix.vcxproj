@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AE7CFEE7-4058-4E3C-ADC2-AE7480EE2028}</ProjectGuid>
+    <RootNamespace>FO3ModLimitFix</RootNamespace>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>FO3ModLimitFix</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>mod_limit_fix</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>mod_limit_fix</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\;$(SolutionDir)..\fose;$(SolutionDir)..\fose\fose;$(SolutionDir)..\..\SimpleINILibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;FALLOUT_VERSION=0x01070030;RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ForcedIncludeFiles>fose_common/fose_prefix.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\;$(SolutionDir)..\fose;$(SolutionDir)..\fose\fose;$(SolutionDir)..\..\SimpleINILibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;FALLOUT_VERSION=0x01070030;RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>fose_common/fose_prefix.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);winmm.lib</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "$(Fallout3Path)\Data\FOSE\Plugins\$(TargetFileName)"</Command>
+      <Message>Installing DLL...</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{20c6411c-596f-4b85-be4e-8bc91f59d8a6}</Project>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\fose\fose\Commands_Console.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Game.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Input.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Inventory.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_List.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Math.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_MiscRef.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_ModelIcon.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Quest.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_Script.cpp" />
+    <ClCompile Include="..\fose\fose\Commands_UI.cpp" />
+    <ClCompile Include="..\fose\fose\CommandTable.cpp" />
+    <ClCompile Include="..\fose\fose\Core_Serialization.cpp" />
+    <ClCompile Include="..\fose\fose\GameAPI.cpp" />
+    <ClCompile Include="..\fose\fose\GameBSExtraData.cpp" />
+    <ClCompile Include="..\fose\fose\GameData.cpp" />
+    <ClCompile Include="..\fose\fose\GameExtraData.cpp" />
+    <ClCompile Include="..\fose\fose\GameForms.cpp" />
+    <ClCompile Include="..\fose\fose\GameInterface.cpp" />
+    <ClCompile Include="..\fose\fose\GameObjects.cpp" />
+    <ClCompile Include="..\fose\fose\GameOSDepend.cpp" />
+    <ClCompile Include="..\fose\fose\GameRTTI.cpp" />
+    <ClCompile Include="..\fose\fose\GameSettings.cpp" />
+    <ClCompile Include="..\fose\fose\GameTiles.cpp" />
+    <ClCompile Include="..\fose\fose\GameTypes.cpp" />
+    <ClCompile Include="..\fose\fose\Hooks_CreatedObject.cpp" />
+    <ClCompile Include="..\fose\fose\Hooks_DirectInput8Create.cpp" />
+    <ClCompile Include="..\fose\fose\Hooks_Gameplay.cpp" />
+    <ClCompile Include="..\fose\fose\Hooks_SaveLoad.cpp" />
+    <ClCompile Include="..\fose\fose\Hooks_Script.cpp" />
+    <ClCompile Include="..\fose\fose\PluginManager.cpp" />
+    <ClCompile Include="..\fose\fose\Serialization.cpp" />
+    <ClCompile Include="..\fose\fose\Utilities.cpp" />
+    <ClCompile Include="..\fose\fose_common\SafeWrite.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exports.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\fose\fose\Commands_Console.h" />
+    <ClInclude Include="..\fose\fose\Commands_Game.h" />
+    <ClInclude Include="..\fose\fose\Commands_Input.h" />
+    <ClInclude Include="..\fose\fose\Commands_Inventory.h" />
+    <ClInclude Include="..\fose\fose\Commands_List.h" />
+    <ClInclude Include="..\fose\fose\Commands_Math.h" />
+    <ClInclude Include="..\fose\fose\Commands_MiscRef.h" />
+    <ClInclude Include="..\fose\fose\Commands_ModelIcon.h" />
+    <ClInclude Include="..\fose\fose\Commands_Quest.h" />
+    <ClInclude Include="..\fose\fose\Commands_Script.h" />
+    <ClInclude Include="..\fose\fose\Commands_UI.h" />
+    <ClInclude Include="..\fose\fose\CommandTable.h" />
+    <ClInclude Include="..\fose\fose\Core_Serialization.h" />
+    <ClInclude Include="..\fose\fose\GameAPI.h" />
+    <ClInclude Include="..\fose\fose\GameBSExtraData.h" />
+    <ClInclude Include="..\fose\fose\GameData.h" />
+    <ClInclude Include="..\fose\fose\GameEffects.h" />
+    <ClInclude Include="..\fose\fose\GameExtraData.h" />
+    <ClInclude Include="..\fose\fose\GameForms.h" />
+    <ClInclude Include="..\fose\fose\GameInterface.h" />
+    <ClInclude Include="..\fose\fose\GameMenus.h" />
+    <ClInclude Include="..\fose\fose\GameObjects.h" />
+    <ClInclude Include="..\fose\fose\GameOSDepend.h" />
+    <ClInclude Include="..\fose\fose\GameRTTI.h" />
+    <ClInclude Include="..\fose\fose\GameSettings.h" />
+    <ClInclude Include="..\fose\fose\GameTiles.h" />
+    <ClInclude Include="..\fose\fose\GameTypes.h" />
+    <ClInclude Include="..\fose\fose\Hooks_CreatedObject.h" />
+    <ClInclude Include="..\fose\fose\Hooks_DirectInput8Create.h" />
+    <ClInclude Include="..\fose\fose\Hooks_Gameplay.h" />
+    <ClInclude Include="..\fose\fose\Hooks_SaveLoad.h" />
+    <ClInclude Include="..\fose\fose\Hooks_Script.h" />
+    <ClInclude Include="..\fose\fose\ParamInfos.h" />
+    <ClInclude Include="..\fose\fose\PluginAPI.h" />
+    <ClInclude Include="..\fose\fose\PluginManager.h" />
+    <ClInclude Include="..\fose\fose\Serialization.h" />
+    <ClInclude Include="..\fose\fose\Utilities.h" />
+    <ClInclude Include="..\fose\fose_common\SafeWrite.h" />
+    <ClInclude Include="hooks.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="offsets.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="stack.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

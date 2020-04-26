@@ -23,8 +23,8 @@ FSS *createstack(int size)
 	FSS *stack = (FSS*)malloc(sizeof(FSS));
 	stack->size = size;
 	stack->top = -1;
-	stack->dbg = 0;
 	stack->items = (CFILE***)calloc(stack->size, sizeof(CFILE***));
+	stack->dbg = 0;
 	if (!stack->items)
 	{
 		return NULL;
