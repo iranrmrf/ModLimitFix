@@ -1,2 +1,4 @@
 # ModLimitFix
-Fallout 3, Fallout New Vegas and Oblivion mod limit bug fix.
+Fallout New Vegas mod limit bug fix.
+
+Fallout 3 and Oblivion will be uploaded within the next few days.
