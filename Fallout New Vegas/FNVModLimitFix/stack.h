@@ -1,16 +1,12 @@
 #pragma once
 
-typedef void *(__cdecl t_malloc_crt(size_t));
-typedef void *(__cdecl t_calloc_crt(size_t, int));
-
-t_malloc_crt* f_malloc_crt = (t_malloc_crt*)0x00ED0CE1;
-t_calloc_crt* f_calloc_crt = (t_calloc_crt*)0x00ED0D26;
+#include <log.h>
+#include <offsets.h>
 
 typedef struct CFILE
 {
 	FILE file;
 	LPCRITICAL_SECTION lpcs;
-	BYTE unk[20];
 	CFILE* ref;
 } CFILE;
 
@@ -19,6 +15,7 @@ typedef struct FSS
 	int size;
 	int top;
 	CFILE*** items;
+	bool dbg;
 } FSS;
 
 FSS *createstack(int size)
@@ -34,19 +31,28 @@ FSS *createstack(int size)
 	return stack;
 }
 
-void spush(FSS *stack, CFILE **file)
+void __forceinline spush(FSS *stack, CFILE **file)
 {
 	if (stack->top < stack->size - 1)
 	{
+		if (stack->dbg)
+		{
+			DMESSAGE("Pushed %#.8x | Stack size %d", file, stack->top + 1);
+		}
 		stack->items[++stack->top] = file;
 	}
 }
 
-CFILE **spop(FSS *stack)
+CFILE __forceinline **spop(FSS *stack)
 {
 	if (stack->top > -1)
 	{
-		return stack->items[stack->top--];
+		CFILE **file = stack->items[stack->top--];
+		if (stack->dbg)
+		{
+			DMESSAGE("Popped %#.8x | Stack size %d", file, stack->top + 1);
+		}
+		return file;
 	}
 	return NULL;
 }

@@ -9,8 +9,8 @@ struct Settings
 	HMODULE hnd;
 	HANDLE dbg;
 	DWORD iMaxHnd;
-	BOOL bVerboseLog;
-	BOOL bDebug;
+	bool bVerboseLog;
+	bool bDebugLog;
 };
 
 Settings settings;
@@ -34,17 +34,17 @@ void InitSettings()
 	);
 
 	settings.bVerboseLog = ini.GetOrCreate(
-		"Logging", "bVerbose", 0,
+		"Logging", "bVerboseLog", 0,
 		"; This will cause logging to enter verbose mode.\n"
-		"; This can be useful to identify why the plugin is not working.\n"
-		"; This only affects the log file.\n"
+		"; This can be useful to identify why the fix is not working.\n"
+		"; Use this before moving to debug mode.\n"
 	);
 
-	settings.bDebug = ini.GetOrCreate(
-		"Logging", "bDebug", 0,
-		"; Activate this if you are experiencing any issues while ingame.\n"
-		"; This will log information to the game's console.\n"
-		"; Logging only begins once ingame.\n"
+	settings.bDebugLog = ini.GetOrCreate(
+		"Logging", "bDebugLog", 0,
+		"; This will cause logging to enter debug mode.\n"
+		"; All stack activity will be logged.\n"
+		"; Leaving this on will lead to performance decrease and a large log file!\n"
 	);
 
 	ini.SaveFile(iniPath, 0);

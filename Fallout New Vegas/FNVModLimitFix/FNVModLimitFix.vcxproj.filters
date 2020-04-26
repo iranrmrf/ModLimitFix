@@ -105,6 +105,8 @@
     <ClInclude Include="settings.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="hooks.h" />
+    <ClInclude Include="offsets.h" />
+    <ClInclude Include="log.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />

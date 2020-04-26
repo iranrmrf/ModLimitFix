@@ -221,6 +221,8 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="main.cpp" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="offsets.h" />
     <ClInclude Include="stack.h">
       <FileType>CppCode</FileType>
     </ClInclude>

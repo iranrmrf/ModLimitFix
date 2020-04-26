@@ -3,42 +3,14 @@
 #include "nvse/PluginAPI.h"
 #include "nvse/SafeWrite.h"
 
-#include <settings.h>
 #include <hooks.h>
-
-DWORD WINAPI StackDebug(LPVOID param)
-{
-	while (1)
-	{
-		Sleep(2000);
-		Console_Print(
-			"Stack allocated at: %#.8x | "
-			"Contains: %d filestreams | "
-			"Percentage remaining: %.2f%",
-			stack, stack->top + 1, (float)(stack->top + 1) / stack->size * 100.0
-			);
-	}
-}
-
-void MessageHandler(NVSEMessagingInterface::Message* msg)
-{
-	switch (msg->type)
-	{
-	case NVSEMessagingInterface::kMessage_PostLoadGame:
-		ResumeThread(settings.dbg);
-		break;
-	default:
-		break;
-	}
-}
+#include <log.h>
+#include <offsets.h>
+#include <settings.h>
 
 extern "C"
 {
-	BOOL WINAPI DllMain(
-		HANDLE  hDllHandle,
-		DWORD   dwReason,
-		LPVOID  lpreserved
-		)
+	BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)
 	{
 		switch (dwReason)
 		{
@@ -55,7 +27,7 @@ extern "C"
 	{
 		info->infoVersion = PluginInfo::kInfoVersion;
 		info->name = "Mod Limit Fix";
-		info->version = 2.0;
+		info->version = 2.5;
 
 		if (nvse->isEditor)
 		{
@@ -75,9 +47,6 @@ extern "C"
 
 	bool NVSEPlugin_Load(const NVSEInterface * nvse)
 	{
-		NVSEMessagingInterface* msgInt = (NVSEMessagingInterface*)nvse->QueryInterface(kInterface_Messaging);
-		msgInt->RegisterListener(nvse->GetPluginHandle(), "NVSE", MessageHandler);
-
 		InitSettings();
 
 		gLog.SetLogLevel(IDebugLog::kLevel_Message);
@@ -87,25 +56,30 @@ extern "C"
 			gLog.SetLogLevel(IDebugLog::kLevel_VerboseMessage);
 		}
 
-		_MESSAGE("Initializing mod limit fix...");
+		if (settings.bDebugLog)
+		{			
+			gLog.SetLogLevel(IDebugLog::kLevel_DebugMessage);
+		}
 
-		_VMESSAGE("Old file handle buffer located at: %#.8x", oldAddy);
+		MESSAGE("Initializing mod limit fix...");
+
+		VMESSAGE("Old file handle buffer located at: %#.8x", oldAddy);
 
 		newAddy = (DWORD)f_calloc_crt(settings.iMaxHnd, 4);
 		if (!newAddy)
 		{	
-			_FATALERROR("Failed to calloc for new file handle buffer.");
+			FATALERROR("Failed to calloc for new file handle buffer.");
 			return false; 
 		}
-		_VMESSAGE("New file handle buffer located at: %#.8x", newAddy);
+		VMESSAGE("New file handle buffer located at: %#.8x", newAddy);
 
 		stack = createstack(settings.iMaxHnd - 20);
 		if (!stack)
 		{
-			_VMESSAGE("Failed to allocate filestream stack.");
+			VMESSAGE("Failed to allocate filestream stack.");
 			return false;
 		}
-		_VMESSAGE("Free filestream stack located at: %#.8x", stack);
+		VMESSAGE("Free filestream stack located at: %#.8x", stack);
 
 		f_lock(1);
 
@@ -115,35 +89,25 @@ extern "C"
 
 		f_unlock(1);
 
-		_VMESSAGE("Freeing old file handle buffer at: %#.8x", oldAddy);
+		VMESSAGE("Freeing old file handle buffer at: %#.8x", oldAddy);
 
 		f_free((void*)oldAddy);
 
-		_VMESSAGE("Hooking _getstream and _fclose functions...");
+		VMESSAGE("Hooking _getstream and _fclose functions...");
 
-		CreateHook((void*)0x00ED8501, &f_getstream, 0x138);
-		CreateHook((void*)0x00EC9907, &f_fclose, 0x7C);
+		Hook((void*)getstreamAddy, &f_getstream, 0x138);
+		Hook((void*)fcloseAddy, &f_fclose, 0x7C);
 
 		for (int i = settings.iMaxHnd - 1; i > 19; i--)
 		{
 			spush(stack, (CFILE**)(newAddy + 4 * i));
 		}
-		_VMESSAGE("Stack contains: %d filestreams.", stack->top + 1);
+		VMESSAGE("Stack contains: %d filestreams.", stack->top + 1);
 
-		if (settings.bDebug)
-		{
-			if (settings.dbg = CreateThread(NULL, NULL, StackDebug, NULL, CREATE_SUSPENDED, NULL))
-			{
-				_VMESSAGE("Successfully started stack debug thread.");
-			}
-			else
-			{
-				_VMESSAGE("Failed to start stack debug thread.");
-			}
-		}
+		stack->dbg = settings.bDebugLog;
 
-		_MESSAGE("Mod limit fix has been successfully applied. Enjoy the new mod limit!");
-
+		MESSAGE("Mod limit fix has been successfully applied. Enjoy the new mod limit!");
+		
 		return true;
 	}
 };
