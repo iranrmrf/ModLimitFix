@@ -119,13 +119,18 @@ __declspec(naked) void *f_getstream()
 		jmp END
 
 	FREE:
+		push ebx
 		call f_free
+		pop ecx
 
 	END:
 		add esp, 0x4
 
+		xor ebx, ebx
+
 		mov eax, edi
 		call f__SEH_epilog4
+
 		ret
 	}
 }
@@ -203,6 +208,7 @@ __declspec(naked) int f_fclose()
 
 	END:
 	   call f__SEH_epilog4
+
 	   ret
 	}
 }
