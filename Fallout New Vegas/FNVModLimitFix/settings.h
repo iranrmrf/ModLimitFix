@@ -44,7 +44,7 @@ void InitSettings()
 		"Logging", "bDebugLog", 0,
 		"; This will cause logging to enter debug mode.\n"
 		"; All stack activity will be logged.\n"
-		"; Leaving this on will lead to performance decrease and a large log file!\n"
+		"; Leaving this on will lead to a decrease in performance and a large log file!\n"
 	);
 
 	ini.SaveFile(iniPath, 0);
