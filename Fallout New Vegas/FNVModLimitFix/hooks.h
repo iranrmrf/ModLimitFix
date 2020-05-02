@@ -3,6 +3,8 @@
 #include <offsets.h>
 #include <stack.h>
 
+std::map<CFILE*, char*> addys;
+
 void Hook(void* addy, void* jump, int size)
 {
 	DWORD oldProt;
@@ -13,202 +15,134 @@ void Hook(void* addy, void* jump, int size)
 	VirtualProtect(addy, size, oldProt, &oldProt);
 }
 
-__declspec(naked) void *f_getstream()
+void __stdcall LogAndSaveName(CFILE** cfile, char *fileName)
 {
-	__asm
-	{
-		push 0x10
-		push 0x01180368
-		call f__SEH_prolog4
-
-		xor edi, edi
-
-		mov dword ptr ss : [ebp - 0x1C], 0x0
-
-		push 0x1
-		call f_lock
-		pop ecx
-
-		mov dword ptr ss : [ebp - 0x4], 0x0
-		mov dword ptr ss : [ebp - 0x20], 0x0
-
-		push stack
-		call spop
-		mov ebx, eax
-
-		push 0x1
-		call f_unlock
-		pop ecx
-
-		mov dword ptr ss : [esp + 0x0], ebx
-		mov ebx, [ebx]
-		test ebx, ebx
-		je CFILENULLPTR
-
-		mov ecx, dword ptr ds : [ebx + 0xC]
-		test cl, 0x83
-		jne END
-		test ecx, 0x8000
-		jne END
-
-		mov eax, ebx
-		add eax, 0x20
-		push eax
-		call EnterCriticalSection
-
-		test byte ptr ds : [ebx + 0xC], 0x83
-		jne UNLOCK
-
-		mov edi, ebx
-		mov dword ptr ss : [ebp - 0x1C], edi
-
-		mov dword ptr ds : [edi + 0x0], 0x0
-		mov dword ptr ds : [edi + 0x4], 0x0
-		mov dword ptr ds : [edi + 0x8], 0x0
-		and dword ptr ds : [edi + 0xC], 0x8000
-		mov dword ptr ds : [edi + 0x10], 0xFFFFFFFF
-		mov dword ptr ds : [edi + 0x1C], 0x0
-
-		mov dword ptr ss : [ebp - 0x4], 0xFFFFFFFE
-
-		jmp END
-
-	UNLOCK:
-		add ebx, 0x20
-		push ebx
-		call LeaveCriticalSection
-		jmp END
-
-	CFILENULLPTR:
-		push 0x3C
-		call f_malloc_crt
-		pop ecx
-
-		test eax, eax
-		je END
-
-		mov ebx, eax
-
-		push 4000
-		add eax, 0x20
-		push eax
-		call InitializeCriticalSectionAndSpinCount
-		test eax, eax
-		je FREE
-
-		mov edi, ebx
-
-		add ebx, 0x20
-		push ebx
-		call EnterCriticalSection
-
-		mov dword ptr ss : [ebp - 0x1C], edi
-
-		mov dword ptr ds : [edi + 0x0], 0x0
-		mov dword ptr ds : [edi + 0x4], 0x0
-		mov dword ptr ds : [edi + 0x8], 0x0
-		mov dword ptr ds : [edi + 0xC], 0x0
-		mov dword ptr ds : [edi + 0x10], 0xFFFFFFFF
-		mov dword ptr ds : [edi + 0x1C], 0x0
-
-		mov eax, dword ptr ss : [ebp - 0x34]
-		mov dword ptr ds : [eax], edi
-
-		mov dword ptr ds : [edi + 0x38], eax
-
-		jmp END
-
-	FREE:
-		push ebx
-		call f_free
-		pop ecx
-
-	END:
-		add esp, 0x4
-
-		xor ebx, ebx
-
-		mov eax, edi
-		call f__SEH_epilog4
-
-		ret
-	}
+	addys.insert(std::pair<CFILE*, char*>(*cfile, fileName));
+	D("N %p %s", *cfile, fileName);
 }
 
-__declspec(naked) int f_fclose()
+void __stdcall LogAndUpdateName(CFILE** cfile, char *fileName)
 {
-	__asm
+	addys[*cfile] = fileName;
+	D("U %p %s", *cfile, fileName);
+}
+
+void __stdcall LogAndDeleteName(CFILE* cfile)
+{
+	D("R %p %s", cfile, addys[cfile]);
+	addys.erase(cfile);
+}
+
+CFILE *__cdecl f_getstream()
+{
+	f_lock(1);
+	CFILE **filePtr = spop(stack);
+	if (!filePtr)
 	{
-		push 0xC
-		push 0x0117FD28
-		call f__SEH_prolog4
-
-		or dword ptr ss : [ebp - 0x1C], 0xFFFFFFFF
-
-		xor eax, eax
-		xor edi, edi
-
-		mov esi, dword ptr ss : [ebp + 0x8]
-		cmp esi, edi
-		je NULLPTR
-
-		test byte ptr ds : [esi + 0xC], 0x40
-		je CLOSE
-
-		mov dword ptr ds : [esi + 0xC], edi
-		mov eax, dword ptr ss : [ebp - 0x1C]
-
-		jmp END
-		
-	CLOSE:
-		push esi
-		call f_lock_file
-
-		mov dword ptr ss : [ebp - 0x4], edi
-
-		push 0x1
-		call f_lock
-
-		push dword ptr ss : [esi + 0x38]
-		push stack
-		call spush
-
-		push 0x1
-		call f_unlock
-
-		push esi
-		call f_fclose_nolock
-
-		add esp, 0x18
-
-		mov dword ptr ss : [ebp - 0x1C], eax
-		mov dword ptr ss : [ebp - 0x4], 0xFFFFFFFE
-
-		push esi
-		call f_unlock_file
-		pop ecx
-
-		mov eax, dword ptr ss : [ebp - 0x1C]
-
-		jmp END
-
-	NULLPTR:
-		call f__errno_0
-		mov dword ptr ds : [eax], 0x16
-
-		push edi
-		push edi
-		push edi
-		push edi
-		push edi
-		call f_invalid_parameter
-		add esp, 0x14
-
-		or eax, 0xFFFFFFFF
-
-	END:
-	   call f__SEH_epilog4
-
-	   ret
+		F("S N");	
+		return nullptr;
 	}
+	CFILE *newFile;
+	if (newFile = *filePtr)
+	{
+		if (!(newFile->file._flag & 0x8083))
+		{
+			EnterCriticalSection(&newFile->lpcs);
+			if (!(newFile->file._flag & 0x83))
+			{
+				newFile->file._flag &= 0x8000u;
+				newFile->file._cnt = 0;
+				newFile->file._base = 0;
+				newFile->file._ptr = 0;
+				newFile->file._tmpfname = 0;
+				newFile->file._file = -1;
+				if (stack->dbg)
+				{
+					DWORD fileName;
+					__asm
+					{
+						mov eax, dword ptr ss : [ebp + 0x0]
+						push dword ptr ss : [eax + 0x8]
+						push filePtr
+						call LogAndUpdateName
+					}
+				}
+				f_unlock(1);
+				return newFile;
+			}
+			LeaveCriticalSection(&newFile->lpcs);
+		}
+	}
+	else
+	{
+		newFile = (CFILE*)f_malloc_crt(sizeof(CFILE));
+		if (!newFile)
+		{
+			F("F A");
+			f_unlock(1);
+			return nullptr;
+		}
+		
+		if (InitializeCriticalSectionAndSpinCount(&newFile->lpcs, 0xFA0u))
+		{
+			EnterCriticalSection(&newFile->lpcs);
+			newFile->file._flag = 0;
+			newFile->file._cnt = 0;
+			newFile->file._base = 0;
+			newFile->file._ptr = 0;
+			newFile->file._tmpfname = 0;
+			newFile->file._file = -1;
+			newFile->ref = filePtr;
+			*filePtr = newFile;
+			if (stack->dbg)
+			{
+				__asm
+				{
+					mov eax, dword ptr ss : [ebp + 0x0]
+					push dword ptr ss : [eax + 0x8]
+					push filePtr
+					call LogAndSaveName
+				}
+			}	
+			f_unlock(1);
+			return newFile;
+		}
+		else
+		{
+			F("C I");
+			f_free(newFile);
+		}
+	}
+	f_unlock(1);
+	return nullptr;
+}
+
+int __cdecl f_fclose(CFILE *cfile)
+{
+	int result = -1;
+	if (cfile)
+	{
+		if (cfile->file._flag & 0x40)
+		{
+			cfile->file._flag = 0;
+			D("F S");
+		}
+		else
+		{
+			EnterCriticalSection(&cfile->lpcs);
+			result = f_fclose_nolock(cfile);
+			LeaveCriticalSection(&cfile->lpcs);
+		}
+		//EnterCriticalSection(&stack->lock);
+		f_lock(1);
+		if (stack->dbg) { LogAndDeleteName(cfile); }
+		spush(stack, cfile->ref);
+		f_unlock(1);		
+		//LeaveCriticalSection(&stack->lock);
+	}
+	else
+	{
+		D("F N");
+	}
+	return result;
 }

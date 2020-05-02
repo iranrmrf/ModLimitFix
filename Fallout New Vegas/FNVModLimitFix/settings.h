@@ -1,17 +1,10 @@
 #pragma once
 
+#include <types.h>
+
 #include <SimpleIni.h>
 
 #define INI_NAME "mod_limit_fix.ini"
-
-struct Settings
-{
-	HMODULE hnd;
-	HANDLE dbg;
-	DWORD iMaxHnd;
-	bool bVerboseLog;
-	bool bDebugLog;
-};
 
 Settings settings;
 
@@ -31,13 +24,6 @@ void InitSettings()
 		"; Leave this at 2048 unless the fix does not work.\n"
 		"; If that is the case, try reducing the number in decrements of 256.\n"
 		"; Reducing it unnecessarily will not lead to performance gains!\n"
-	);
-
-	settings.bVerboseLog = ini.GetOrCreate(
-		"Logging", "bVerboseLog", 0,
-		"; This will cause logging to enter verbose mode.\n"
-		"; This can be useful to identify why the fix is not working.\n"
-		"; Use this before moving to debug mode.\n"
 	);
 
 	settings.bDebugLog = ini.GetOrCreate(
