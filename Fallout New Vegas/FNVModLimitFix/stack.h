@@ -12,12 +12,11 @@ FSS *createstack(int size)
 	s->dbg = 0;
 	s->items = (CFILE***)f_calloc_crt(s->size, (int)sizeof(CFILE***));
 	if (!s->items) { return nullptr; }
-	//InitializeCriticalSectionAndSpinCount(&s->lock);
+	InitializeCriticalSection(&s->lock);
 	return s;
 }
 
-__forceinline
-void spush(FSS *stack, CFILE **ref)
+void __fastcall spush(FSS *stack, CFILE **ref)
 {
 	if (stack->top < stack->size - 1)
 	{
@@ -28,8 +27,7 @@ void spush(FSS *stack, CFILE **ref)
 	F("S F");
 }
 
-__forceinline
-CFILE **spop(FSS *stack)
+CFILE **__fastcall spop(FSS *stack)
 {
 	if (stack->top > -1)
 	{

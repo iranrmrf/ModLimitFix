@@ -13,7 +13,7 @@ struct FSS
 	int top;
 	int dbg;
 	CFILE*** items;
-	//CRITICAL_SECTION lock;
+	CRITICAL_SECTION lock;
 };
 
 struct Settings

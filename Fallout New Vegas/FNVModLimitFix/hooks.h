@@ -15,31 +15,37 @@ void Hook(void* addy, void* jump, int size)
 	VirtualProtect(addy, size, oldProt, &oldProt);
 }
 
-void __stdcall LogAndSaveName(CFILE** cfile, char *fileName)
+void __cdecl LogAndSaveName(CFILE** cfile, char *fileName)
 {
 	addys.insert(std::pair<CFILE*, char*>(*cfile, fileName));
 	D("N %p %s", *cfile, fileName);
 }
 
-void __stdcall LogAndUpdateName(CFILE** cfile, char *fileName)
+void __cdecl LogAndUpdateName(CFILE** cfile, char *fileName)
 {
 	addys[*cfile] = fileName;
 	D("U %p %s", *cfile, fileName);
 }
 
-void __stdcall LogAndDeleteName(CFILE* cfile)
+void __cdecl LogAndDeleteName(CFILE* cfile)
 {
 	D("R %p %s", cfile, addys[cfile]);
 	addys.erase(cfile);
 }
 
+void __cdecl LogFileError(CFILE* cfile)
+{
+	D("E %p %s", cfile, addys[cfile]);
+}
+
 CFILE *__cdecl f_getstream()
 {
-	f_lock(1);
+	EnterCriticalSection(&stack->lock);
 	CFILE **filePtr = spop(stack);
+	LeaveCriticalSection(&stack->lock);
 	if (!filePtr)
 	{
-		F("S N");	
+		F("S N");
 		return nullptr;
 	}
 	CFILE *newFile;
@@ -58,16 +64,15 @@ CFILE *__cdecl f_getstream()
 				newFile->file._file = -1;
 				if (stack->dbg)
 				{
-					DWORD fileName;
 					__asm
 					{
 						mov eax, dword ptr ss : [ebp + 0x0]
 						push dword ptr ss : [eax + 0x8]
 						push filePtr
 						call LogAndUpdateName
+						add esp, 0x8
 					}
 				}
-				f_unlock(1);
 				return newFile;
 			}
 			LeaveCriticalSection(&newFile->lpcs);
@@ -79,10 +84,8 @@ CFILE *__cdecl f_getstream()
 		if (!newFile)
 		{
 			F("F A");
-			f_unlock(1);
 			return nullptr;
-		}
-		
+		}	
 		if (InitializeCriticalSectionAndSpinCount(&newFile->lpcs, 0xFA0u))
 		{
 			EnterCriticalSection(&newFile->lpcs);
@@ -93,7 +96,9 @@ CFILE *__cdecl f_getstream()
 			newFile->file._tmpfname = 0;
 			newFile->file._file = -1;
 			newFile->ref = filePtr;
+			f_lock(1);
 			*filePtr = newFile;
+			f_unlock(1);
 			if (stack->dbg)
 			{
 				__asm
@@ -102,9 +107,9 @@ CFILE *__cdecl f_getstream()
 					push dword ptr ss : [eax + 0x8]
 					push filePtr
 					call LogAndSaveName
+					add esp, 0x8
 				}
 			}	
-			f_unlock(1);
 			return newFile;
 		}
 		else
@@ -113,7 +118,6 @@ CFILE *__cdecl f_getstream()
 			f_free(newFile);
 		}
 	}
-	f_unlock(1);
 	return nullptr;
 }
 
@@ -133,16 +137,31 @@ int __cdecl f_fclose(CFILE *cfile)
 			result = f_fclose_nolock(cfile);
 			LeaveCriticalSection(&cfile->lpcs);
 		}
-		//EnterCriticalSection(&stack->lock);
-		f_lock(1);
+		EnterCriticalSection(&stack->lock);
 		if (stack->dbg) { LogAndDeleteName(cfile); }
 		spush(stack, cfile->ref);
-		f_unlock(1);		
-		//LeaveCriticalSection(&stack->lock);
+		LeaveCriticalSection(&stack->lock);
 	}
 	else
 	{
 		D("F N");
 	}
 	return result;
+}
+
+void __declspec(naked) f_fail()
+{
+	__asm
+	{
+		test eax, eax
+		je LBL_ERROR
+		jmp LBL_END
+	LBL_ERROR :
+		call LogFileError
+		call f_fclose
+	LBL_END :
+		add dword ptr ss : [esp + 0x0], 0x20
+		call LeaveCriticalSection
+		ret
+	}
 }

@@ -7,6 +7,7 @@ DWORD *maxAddy;
 
 void *getstreamAddy;
 void *fcloseAddy;
+void* failAddy;
 
 void InitOffsets()
 {
@@ -23,4 +24,5 @@ void InitOffsets()
 
 	getstreamAddy = (void*)0x00ED8501;
 	fcloseAddy = (void*)0x00EC9907;
+	failAddy = (void*)0x00EC9A40;
 }

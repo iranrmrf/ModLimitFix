@@ -82,10 +82,11 @@ extern "C"
 
 		f_free((void*)oldAddy);
 
-		V("Hooking _getstream and _fclose...");
+		V("Hooking _getstream, _fclose and file fail to load...");
 
 		Hook((void*)getstreamAddy, &f_getstream, 0x138);
 		Hook((void*)fcloseAddy, &f_fclose, 0x7C);
+		Hook((void*)failAddy, &f_fail, 0x5);
 
 		V("Filling stack...");
 		CFILE** addy = newAddy + settings.iMaxHnd - 1;
