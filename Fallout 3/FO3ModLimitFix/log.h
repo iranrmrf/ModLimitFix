@@ -2,18 +2,26 @@
 
 #include <chrono>
 
-#define FATALERROR(fmt, ...) _FATALERROR ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
-#define ERROR(fmt, ...)	_ERROR ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
-#define WARNING(fmt, ...) _WARNING ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
-#define MESSAGE(fmt, ...) _MESSAGE ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
-#define VMESSAGE(fmt, ...) _VMESSAGE ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
-#define DMESSAGE(fmt, ...) _DMESSAGE ("[%s] " fmt, GetTime(), ## __VA_ARGS__)
+#include <types.h>
+
+CRITICAL_SECTION logCS;
+
+#define LOG( func, fmt, ... ) CS(func(fmt, __VA_ARGS__), &logCS)
+
+#define F( fmt, ... ) LOG( _FATALERROR,	"%s " fmt, GetTime(), __VA_ARGS__ )
+#define E( fmt, ... ) LOG( _ERROR,		"%s " fmt, GetTime(), __VA_ARGS__ )
+#define W( fmt, ... ) LOG( _WARNING,	"%s " fmt, GetTime(), __VA_ARGS__ )
+#define M( fmt, ... ) LOG( _MESSAGE,	"%s " fmt, GetTime(), __VA_ARGS__ )
+#define V( fmt, ... ) LOG( _VMESSAGE,	"%s " fmt, GetTime(), __VA_ARGS__ )
+#define D( fmt, ... ) LOG( _DMESSAGE,	"%s " fmt, GetTime(), __VA_ARGS__ )
 
 char* GetTime()
 {
-	static char msgBuff[64];
+	static char buff[9];
 	time_t timet;
 	time(&timet);
-	strftime(msgBuff, sizeof(msgBuff), "%Y-%m-%d %H:%M:%S", localtime(&timet));
-	return msgBuff;
+	tm tmt;
+	localtime_s(&tmt, &timet);
+	strftime(buff, 9, "%d%H%M%S", &tmt);
+	return buff;
 }

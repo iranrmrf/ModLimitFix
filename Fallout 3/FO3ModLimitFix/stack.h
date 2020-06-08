@@ -1,61 +1,48 @@
 #pragma once
 
 #include <log.h>
-#include <offsets.h>
+#include <types.h>
 
-typedef struct CFILE
+FSS* createstack(int size)
 {
-	FILE file;
-	LPCRITICAL_SECTION lpcs;
-	CFILE* ref;
-} CFILE;
-
-typedef struct FSS
-{
-	int size;
-	int top;
-	CFILE*** items;
-	bool dbg;
-} FSS;
-
-FSS *createstack(int size)
-{
-	FSS *stack = (FSS*)malloc(sizeof(FSS));
-	stack->size = size;
-	stack->top = -1;
-	stack->items = (CFILE***)calloc(stack->size, sizeof(CFILE***));
-	stack->dbg = 0;
-	if (!stack->items)
-	{
-		return NULL;
-	}
-	return stack;
+	FSS *s = (FSS*)f_malloc_crt(sizeof(FSS));
+	if (!s) { return nullptr; }
+	s->size = size;
+	s->top = -1;
+	s->dbg = 0;
+	s->items = (CFILE***)f_calloc_crt(s->size, (int)sizeof(CFILE***));
+	if (!s->items) { return nullptr; }
+	InitializeCriticalSection(&s->cs);
+	return s;
 }
 
-void __forceinline spush(FSS *stack, CFILE **file)
+void __fastcall spush(FSS* stack, CFILE** ref)
 {
 	if (stack->top < stack->size - 1)
 	{
+		stack->items[++stack->top] = ref;
 		if (stack->dbg)
 		{
-			DMESSAGE("Pushed %#.8x | Stack size %d", file, stack->top + 1);
+			D("+ %p %04d", ref, stack->top + 1);
 		}
-		stack->items[++stack->top] = file;
+		return;
 	}
+	F("S F");
 }
 
-CFILE __forceinline **spop(FSS *stack)
+CFILE** __fastcall spop(FSS* stack)
 {
 	if (stack->top > -1)
 	{
-		CFILE **file = stack->items[stack->top--];
+		CFILE** ref = stack->items[stack->top--];
 		if (stack->dbg)
 		{
-			DMESSAGE("Popped %#.8x | Stack size %d", file, stack->top + 1);
+			D("- %p %04d", ref, stack->top + 1);
 		}
-		return file;
+		return ref;
 	}
-	return NULL;
+	F("S E");
+	return nullptr;
 }
 
-FSS *stack;
+FSS* stack;

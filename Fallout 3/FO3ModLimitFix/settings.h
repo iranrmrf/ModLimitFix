@@ -1,17 +1,10 @@
 #pragma once
 
+#include <types.h>
+
 #include <SimpleIni.h>
 
 #define INI_NAME "mod_limit_fix.ini"
-
-struct Settings
-{
-	HMODULE hnd;
-	HANDLE dbg;
-	DWORD iMaxHnd;
-	bool bVerboseLog;
-	bool bDebugLog;
-};
 
 Settings settings;
 
@@ -30,21 +23,14 @@ void InitSettings()
 		"; This is the maximum number of file handles the game may open.\n"
 		"; Leave this at 2048 unless the fix does not work.\n"
 		"; If that is the case, try reducing the number in decrements of 256.\n"
-		"; Reducing it unnecessarily will not lead to performance gains!\n"
+		"; Reducing it unnecessarily will not lead to performance gains!"
 		);
 
-	settings.bVerboseLog = ini.GetOrCreate(
-		"Logging", "bVerboseLog", 0,
-		"; This will cause logging to enter verbose mode.\n"
-		"; This can be useful to identify why the fix is not working.\n"
-		"; Use this before moving to debug mode.\n"
-		);
-
-	settings.bDebugLog = ini.GetOrCreate(
-		"Logging", "bDebugLog", 0,
-		"; This will cause logging to enter debug mode.\n"
-		"; All stack activity will be logged.\n"
-		"; Leaving this on will lead to a decrease in performance and a large log file!\n"
+	settings.bDebug = ini.GetOrCreate(
+		"Logging", "bDebug", 0,
+		"; This will enter debug mode.\n"
+		"; All stack activity will be logged into mod_limit_fix.log\n"
+		"; Leaving this on will lead to a decrease in performance and a large log file!"
 		);
 
 	ini.SaveFile(iniPath, 0);
