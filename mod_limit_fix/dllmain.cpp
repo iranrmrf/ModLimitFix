@@ -25,7 +25,7 @@ EXPORT bool MLF_PREPEND_EXTENDER(Plugin_Query)(const Interface* interface, Plugi
 	info->infoVersion = PluginInfo::kInfoVersion;
 	info->name = STRING(MLF_GAME) " Mod Limit Fix";
 	info->version = 3.0;
-	return true;
+	return !interface->isEditor;
 }
 
 EXPORT bool MLF_PREPEND_EXTENDER(Plugin_Load)(const Interface* interface)
