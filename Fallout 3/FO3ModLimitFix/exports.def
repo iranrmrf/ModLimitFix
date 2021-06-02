@@ -1,4 +1,0 @@
-LIBRARY	"mod_limit_fix"
-EXPORTS
-FOSEPlugin_Query
-FOSEPlugin_Load
