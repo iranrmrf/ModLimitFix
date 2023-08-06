@@ -9,7 +9,7 @@
 #define MLF_PREPEND_EXTENDER(f) EXPAND(MLF_EXTENDER_NAME)##f
 
 int* pnstream = (int*)MLF_N_STREAM;
-struct LFILE*** ppiob = (struct LFILE***)MLF_PIOB;
+void*** ppiob = (void***)MLF_PIOB;
 struct Stack stack;
 
 struct Interface
@@ -100,7 +100,7 @@ EXPORT int MLF_PREPEND_EXTENDER(Plugin_Load)(const struct Interface* iface)
 	((void(__cdecl*)(int))MLF_LOCK)(1);
 
 	*pnstream = 2048;
-	*ppiob = (struct LFILE**)((void* (__cdecl*)(void*, size_t, size_t))MLF_RECALLOC_CRT)(*ppiob, *pnstream, sizeof(void*));
+	*ppiob = (void**)((void* (__cdecl*)(void*, size_t, size_t))MLF_RECALLOC_CRT)(*ppiob, *pnstream, sizeof(void*));
 
 	stack_init(&stack, *pnstream);
 
