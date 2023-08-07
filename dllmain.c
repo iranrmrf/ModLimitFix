@@ -38,10 +38,15 @@ void patch_byte(void* addr, BYTE value)
 void patch_call(void* addr, void* jump, int size)
 {
 	DWORD p;
+	BYTE* data = (BYTE*)addr;
 	VirtualProtect(addr, size, PAGE_EXECUTE_READWRITE, &p);
 	memset(addr, 0x90, size);
-	*(BYTE*)addr = 0xE8;
-	*(DWORD*)((DWORD)addr + 1) = (DWORD)jump - (DWORD)addr - 5;
+	data[0] = 0xE8;
+	*(DWORD*)(&data[1]) = (ptrdiff_t)jump - (ptrdiff_t)addr - 5;
+	if (size >= 7) {
+		data[5] = 0xEB;
+		data[6] = size - 7;
+	}
 	VirtualProtect(addr, size, p, &p);
 }
 
@@ -51,10 +56,10 @@ __declspec(naked) void open_hook(void) {
 		call stack_pop
 		add esp, 0x4
 		mov esi, eax
-		mov[ebp - 20h], eax
+		mov[ebp - 0x20], eax
 		mov edx, [ppiob]
 		mov edx, [edx]
-		lea eax, [edx + eax * 4]
+		lea eax, [edx + eax * 0x4]
 		retn
 	}
 }
@@ -64,9 +69,8 @@ __declspec(naked) void index_hook(void) {
 		mov eax, [ppiob]
 		mov eax, [eax]
 		mov edi, [esi + eax]
-		mov[edi + 0Ch], ebx
-		mov eax, [ebp - 20h]
-		mov[edi + 38h], eax
+		mov eax, [ebp - 0x20]
+		mov[edi + 0x38], eax
 		retn
 	}
 }
@@ -108,11 +112,10 @@ EXPORT int MLF_PREPEND_EXTENDER(Plugin_Load)(const struct Interface* iface)
 		if (ppiob[i] == NULL)
 			stack_push(&stack, i);
 
-
-	patch_call((void*)0x00ED851C, open_hook, 0x1C);
-	patch_call((void*)0x00ED85F1, index_hook, 0x8);
-	patch_call((void*)0x00EC997C, close_hook, 0x5);
-	patch_byte((void*)0x00ED859B, 0x3C);
+	patch_call((void*)MLF_OPEN_HOOK, open_hook, 0x1C);
+	patch_call((void*)MLF_INDEX_HOOK, index_hook, 0x8);
+	patch_call((void*)MLF_CLOSE_HOOK, close_hook, 0x5);
+	patch_byte((void*)MLF_SIZE_BYTE, 0x3C);
 
 	((void(__cdecl*)(int))MLF_UNLOCK)(1);
 
